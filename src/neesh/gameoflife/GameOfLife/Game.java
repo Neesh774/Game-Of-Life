@@ -11,11 +11,11 @@ public class Game {
 	private static int[][] grid;
 	private static int generation;
 	private static Message lastMessage;
-	public Game() {
+	public Game() {  //Constructor
 		grid = new int[GameOfLife.size][GameOfLife.size];
 		generation = 0;
 	}
-	public static int[][] getGrid() {
+	public static int[][] getGrid() {  //Method that will return the grid for a certain Game
 		return grid;
 	}
 	public static int getGen() {
@@ -27,7 +27,7 @@ public class Game {
 	public static void setLast(Message message) {
 		lastMessage = message;
 	}
-	public static boolean isDead() {
+	public static boolean isDead() {  //Checks if a grid is dead with no living cells on it.
 		for(int i = 0;i < grid.length;i ++) {
 			for(int g = 0;g < grid[i].length; g ++) {
 				if(grid[i][g] == 1) {
@@ -37,10 +37,10 @@ public class Game {
 		}
 		return true;
 	}
-	public static String getGridString() {
+	public static String getGridString() {  //Creates a String that represents the grid, using the specified emotes in GameOfLife.java
 		String str = "";
-		for(int i = 0;i < grid.length; i ++) {
-			for(int g= 0;g < grid[i].length;g++) {
+		for(int i = 0;i < GameOfLife.size; i ++) {
+			for(int g= 0;g < GameOfLife.size;g++) {
 				if(grid[i][g] == 0) {
 					str += GameOfLife.deadCell;
 				}
@@ -52,7 +52,7 @@ public class Game {
 		}
 		return str;
 	}
-	public static void nextGen() {
+	public static void nextGen() {   //A method that will edit the grid to set it to the next generation
 		int size = GameOfLife.size;
 		int[][] future = new int[size][size];
 		  
@@ -93,7 +93,7 @@ public class Game {
         generation++;
         grid = future;	
 	}
-	public static void randomizeGrid() {
+	public static void randomizeGrid() {  //Randomizes the grid, setting each cell to either 1 or 0, alive or dead
 		for(int i = 0;i < grid.length;i ++) {
 			for(int g = 0; g< grid[i].length;g++) {
 				int ran = (int) (Math.random() * 2);

@@ -20,4 +20,4 @@ To prevent GoL from conflicting with other bots, admins can choose any prefix to
 - ``golhelp`` provides some helpful info about the bot.
 ### Admin
 - ``golsetprefix [prefix]`` can be used to change the prefix of the bot.
-- ``golsize [size]`` can be used to change the size of the grids(Grids can only go up to size 15 because of limitations in Discord Embeds).
+- ``golsize [size]`` can be used to change the size of the grids(Grids can only go up to size 14 because of limitations in Discord Embeds).
