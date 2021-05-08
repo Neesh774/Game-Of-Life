@@ -15,8 +15,9 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 public class GameOfLife {
 	public static JDA jda;
 	public static String prefix = "gol";
-	public static String deadCell = ":white_large_square:";
-	public static String liveCell = ":black_large_square:";
+	public static int size = 10;
+	public static String deadCell = ":black_large_square:";
+	public static String liveCell = ":white_large_square:";
 	public static void main(String[] args) throws FileNotFoundException, LoginException {
 		// TODO Auto-generated method stub
 		Scanner tk = new Scanner(new File("token.txt"));
@@ -25,6 +26,8 @@ public class GameOfLife {
 		jda.getPresence().setStatus(OnlineStatus.IDLE);
 		jda.getPresence().setActivity(Activity.watching("golhelp"));
 		jda.addEventListener(new UtilCommands());
+		jda.addEventListener(new GameCommands());
+		jda.addEventListener(new GameReactionListener());
 	}
 
 }

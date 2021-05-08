@@ -3,6 +3,7 @@ package neesh.gameoflife.GameOfLife;
 import java.awt.Color;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -20,7 +21,7 @@ public class UtilCommands extends ListenerAdapter{
 		User author = event.getAuthor();  //Gets the author of the message
 		MessageChannel channel = event.getChannel();  //Gets the channel the message was sent in
 		String prefix = GameOfLife.prefix;
-		if(author.isBot()) {
+		if(author.isBot() || message.length() < prefix.length()) {
 			return;  //Returns if the message doesn't start with the prefix or the bot sent the message
 		}
 //		System.out.println("Message: " + message);
@@ -31,13 +32,17 @@ public class UtilCommands extends ListenerAdapter{
 		String command = args[0];
 //		System.out.println("Command: |" + command + "|");
 		if(event.getMessage().getMentionedUsers().contains(event.getJDA().getSelfUser())) {
-			channel.sendMessage("Hello! My prefix is `" + prefix + "`.").queue();
+			Embeds.sendInfoEmbed(channel, author);
 		}
 		if(command.equalsIgnoreCase("help")) {
-			channel.sendMessage("Hello! My prefix is `" + prefix + "`.").queue();
+			Embeds.sendInfoEmbed(channel, author);
 		}
+		//============================changes the prefix======================================================
 		else if(command.equalsIgnoreCase("setprefix")) {
-			
+			if(!event.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+				Embeds.sendNoPermissionsEmbed(channel, author);
+				return;
+			}
 			try { //making sure that the command actually has a prefix to be set
 				GameOfLife.prefix = args[1];
 				prefix = args[1];
@@ -45,28 +50,15 @@ public class UtilCommands extends ListenerAdapter{
 			}
 			catch(ArrayIndexOutOfBoundsException e) {
 				e.printStackTrace();
-				channel.sendMessage("Please specify the new prefix.").queue();
+				Embeds.sendErrorEmbed(channel, author);
 			}	
 		}
+		//==============================Ping command for latency==============================================
 		else if(command.equalsIgnoreCase("ping")) {
 	        long time = System.currentTimeMillis();   //Gets the current time
 	        Message msg = event.getChannel().sendMessage(":signal_strength: Ping").complete(); //Sends a message to see how long it takes
 	        long latency = System.currentTimeMillis() - time;  //Gets the time after sending a message
 	        channel.sendMessage("Pong! Your latency is " + latency).queue();  //Sends the message
-		}
-		else if(command.equalsIgnoreCase("setdeadcell")) {
-			try {
-				if(args[1].startsWith(":") && args[1].endsWith(":")) {
-					GameOfLife.deadCell = args[1];
-				}
-				else {
-					channel.sendMessage("Please send an emote.").queue();
-				}
-			}
-			catch(ArrayIndexOutOfBoundsException e) {
-				e.printStackTrace();
-				channel.sendMessage("Please specify the new emote.").queue();
-			}
 		}
 	}
 }

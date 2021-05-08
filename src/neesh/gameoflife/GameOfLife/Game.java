@@ -12,7 +12,7 @@ public class Game {
 	private static int generation;
 	private static Message lastMessage;
 	public Game() {
-		grid = new int[10][10];
+		grid = new int[GameOfLife.size][GameOfLife.size];
 		generation = 0;
 	}
 	public static int[][] getGrid() {
@@ -27,6 +27,16 @@ public class Game {
 	public static void setLast(Message message) {
 		lastMessage = message;
 	}
+	public static boolean isDead() {
+		for(int i = 0;i < grid.length;i ++) {
+			for(int g = 0;g < grid[i].length; g ++) {
+				if(grid[i][g] == 1) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 	public static String getGridString() {
 		String str = "";
 		for(int i = 0;i < grid.length; i ++) {
@@ -38,16 +48,18 @@ public class Game {
 					str += GameOfLife.liveCell;
 				}
 			}
+			str += "\n";
 		}
 		return str;
 	}
 	public static void nextGen() {
-		int[][] future = new int[10][10];
+		int size = GameOfLife.size;
+		int[][] future = new int[size][size];
 		  
         // Loop through every cell
-        for (int l = 1; l < 10 - 1; l++)
+        for (int l = 1; l < size-1; l++)
         {
-            for (int m = 1; m < 10 - 1; m++)
+            for (int m = 1; m < size-1; m++)
             {
                 // finding number of surrounding living cells
                 int aliveNeighbours = 0;
@@ -78,6 +90,14 @@ public class Game {
                     future[l][m] = grid[l][m];
             }
         }
-        grid = future;
+        grid = future;	
+	}
+	public static void randomizeGrid() {
+		for(int i = 0;i < grid.length;i ++) {
+			for(int g = 0; g< grid[i].length;g++) {
+				int ran = (int) (Math.random() * 2);
+				grid[i][g] = ran;
+			}
+		}
 	}
 }

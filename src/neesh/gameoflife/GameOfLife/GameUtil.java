@@ -14,10 +14,14 @@ public class GameUtil {
 	}
 	public static void createGame(User author) {
 		Game game = new Game();
+		game.randomizeGrid();
 		games.put(author, game);
 	}
 	public static Game getGame(User author) {
 		return games.get(author);
+	}
+	public static void endGame(User author) {
+		games.remove(author);
 	}
 	public static void editLast(User author) {
 		EmbedBuilder display = new EmbedBuilder();
@@ -25,20 +29,10 @@ public class GameUtil {
 		display.setTitle("Game Of Life");
 		getGame(author);
 		display.setDescription(Game.getGridString());
+		display.addField("Type r to refresh the grid, or n to go to the next generation.	", "", false);
+        display.setColor(Color.magenta);
 		display.addField("Requested by ", author.getAsMention(), true);
 		games.get(author);
 		Game.getLast().editMessage(display.build()).queue();
-	}
-	public static void display(MessageChannel channel, User author) {
-		EmbedBuilder display = new EmbedBuilder();
-		display.setColor(Color.orange);
-		display.setTitle("Game Of Life");
-		getGame(author);
-		display.setDescription(Game.getGridString());
-		display.addField("Requested by ", author.getAsMention(), true);
-		channel.sendMessage(display.build()).queue(message -> {
-			getGame(author);
-			Game.setLast(message);
-		});
 	}
 }
