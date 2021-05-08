@@ -1,5 +1,5 @@
 # Game-Of-Life
-GoL is a Discord Bot written with [JDA](https://github.com/DV8FromTheWorld/JDA) that lets yuo play [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life), a classic simulation game with dead, and living cells.
+GoL is a Discord Bot written with [JDA](https://github.com/DV8FromTheWorld/JDA) that lets you play [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life), a classic simulation game with dead, and living cells.
 
 ## Features
 ### Random Grids
