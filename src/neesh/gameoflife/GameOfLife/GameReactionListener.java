@@ -24,7 +24,14 @@ public class GameReactionListener extends ListenerAdapter{
 		if(emote.equals("RE:U+25b6")) {
 			GameUtil.getGame(user);
 			Game.nextGen();
-			GameUtil.editLast(user);
+			if(Game.isDead()) {
+				Embeds.sendDeadGameEmbed(channel, user);
+				Embeds.sendEndEmbed(channel, user);
+				GameUtil.endGame(user);
+			}
+			else {
+				GameUtil.editLast(user);
+			}
 //			System.out.println("Detected Next gen");
 		}
 		else if(emote.equals("RE:U+23f9")) {

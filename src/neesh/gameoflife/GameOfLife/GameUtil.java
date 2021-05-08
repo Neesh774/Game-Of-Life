@@ -21,6 +21,7 @@ public class GameUtil {
 		return games.get(author);
 	}
 	public static void endGame(User author) {
+		getGame(author).getLast().delete().queue();
 		games.remove(author);
 	}
 	public static void editLast(User author) {
@@ -31,6 +32,8 @@ public class GameUtil {
 		display.setDescription(Game.getGridString());
 		display.addField("Type r to refresh the grid, or n to go to the next generation.	", "", false);
         display.setColor(Color.magenta);
+        getGame(author);
+		display.addField("Generation", String.valueOf(Game.getGen()), false);
 		display.addField("Requested by ", author.getAsMention(), true);
 		games.get(author);
 		Game.getLast().editMessage(display.build()).queue();

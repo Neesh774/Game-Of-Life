@@ -90,6 +90,7 @@ public class Game {
                     future[l][m] = grid[l][m];
             }
         }
+        generation++;
         grid = future;	
 	}
 	public static void randomizeGrid() {

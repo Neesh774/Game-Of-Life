@@ -58,7 +58,7 @@ public class UtilCommands extends ListenerAdapter{
 	        long time = System.currentTimeMillis();   //Gets the current time
 	        Message msg = event.getChannel().sendMessage(":signal_strength: Ping").complete(); //Sends a message to see how long it takes
 	        long latency = System.currentTimeMillis() - time;  //Gets the time after sending a message
-	        channel.sendMessage("Pong! Your latency is " + latency).queue();  //Sends the message
+	        channel.sendMessage("Pong! Your latency is " + latency + " ms.").queue();  //Sends the message
 		}
 	}
 }

@@ -12,8 +12,12 @@ public class Embeds {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle("Game of Life");	
         embed.setDescription(grid);
-        embed.addField("Type r to refresh the grid, or n to go to the next generation.	", "", false);
+        embed.addField("Type r to refresh the grid, s to stop the game, or n to go to the next generation.	", "", true);
+        embed.addField("You can also use :arrow_forward: for the next generation, :repeat: to refresh the grid, and :stop_button: to end the game.", "", false);
+        GameUtil.getGame(user);
+		embed.addField("Generation", String.valueOf(Game.getGen()), false);
         embed.addField("Player", user.getAsMention(), false);
+        
         embed.setColor(Color.magenta);
         channel.sendMessage(embed.build()).queue(message ->{
         	message.addReaction("U+25B6").queue();
@@ -23,9 +27,15 @@ public class Embeds {
         });
     }
     public static void sendInfoEmbed(MessageChannel channel, User user) {
+    	String prefix = GameOfLife.prefix;
     	EmbedBuilder embed = new EmbedBuilder();
     	embed.setTitle("Game of Life");
-    	embed.setDescription("Start a new Game of Life with `" + GameOfLife.prefix + "start`. You can go to the next generation with `n`, refresh the map with `r`, and end the game with `s`.");
+    	embed.setDescription("[] = required, <> = optional");
+    	embed.addField("`" + prefix + "start`", "Starts a game if you don't already have one.", false);
+    	embed.addField("`" + prefix + "stop`", "Stops an active game if you have one.", false);
+    	embed.addField("`" + prefix + "ping`", "Pong!", false);
+    	embed.addField("`" + prefix + "size [size]`", "Changes the size of the grid.", false);
+    	embed.addField("`" + prefix + "setprefix [prefix]`", "Changes the prefix of the bot.", false);
     	embed.addField("My prefix: ", GameOfLife.prefix, false);
     	embed.addField("Player", user.getAsMention(), false);
     	embed.setColor(Color.magenta);
