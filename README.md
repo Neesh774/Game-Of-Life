@@ -23,3 +23,7 @@ GoL has a couple of presets that start interesting designs. Players will soon be
 ### Admin
 - ``golsetprefix [prefix]`` can be used to change the prefix of the bot.
 - ``golsize [size]`` can be used to change the size of the grids(Grids can only go up to size 14 because of limitations in Discord Embeds).
+
+## To be added
+- A toggleable automatic feature that will update the game to the next generation every 5 seconds.
+- Games that time out if not updated after 5 minutes.
