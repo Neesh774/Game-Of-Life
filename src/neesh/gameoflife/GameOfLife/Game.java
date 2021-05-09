@@ -41,7 +41,6 @@ public class Game {
 			}
 			str += "\n";
 		}
-		str += "Please enter 'n' to go to the next generation, 'r' to re-randomize your grid, or 's' to end your game.";
 		return str;
 	}
 	public static void nextGen() {   //A method that will edit the grid to set it to the next generation
