@@ -1,5 +1,7 @@
 package neesh.gameoflife.GameOfLife;
 
+import java.util.ArrayList;
+
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -81,6 +83,26 @@ public class GameCommands extends ListenerAdapter{
 				e.printStackTrace();
 				Embeds.sendErrorEmbed(channel, author);
 			}
+		}
+		//=====================================Presets============================
+		else if(command.equalsIgnoreCase("preset")){
+			if(!Presets.isPreset(args[1])) {
+				Embeds.sendErrorEmbed(channel, author);
+				return;
+			}
+			if(GameUtil.hasGame(author)) {
+				GameUtil.getGame(author);
+				Game.setGrid(Presets.getPreset(args[1]));
+				GameUtil.editLast(author);
+			}
+			else {
+				GameUtil.createGame(author);
+				Game.setGrid(Presets.getPreset(args[1]));
+				Embeds.sendGameEmbed(channel, GameUtil.getGame(author), author);
+			}
+		}
+		else if(command.equalsIgnoreCase("presets")) {
+			Embeds.sendPresetsEmbed(channel, author);
 		}
 	}
 }

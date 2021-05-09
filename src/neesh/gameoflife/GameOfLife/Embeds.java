@@ -47,6 +47,8 @@ public class Embeds {
     	embed.addField("`" + prefix + "ping`", "Pong!", false);
     	embed.addField("`" + prefix + "size [size]`", "Changes the size of the grid.", false);
     	embed.addField("`" + prefix + "setprefix [prefix]`", "Changes the prefix of the bot.", false);
+    	embed.addField("`" + prefix + "presets`", "Lists out all of my presets", false);
+    	embed.addField("`" + prefix + "preset [presetID]`", "Loads the specified preset", false);
     	embed.addField("My prefix: ", GameOfLife.prefix, false);
     	embed.addField("Player", user.getAsMention(), false);
     	embed.setColor(Color.magenta);
@@ -104,6 +106,24 @@ public class Embeds {
     	EmbedBuilder embed = new EmbedBuilder();
     	embed.setTitle("Success!");
     	embed.setDescription("I successfully set the new size to " + size);
+    	embed.addField("Player", user.getAsMention(), false);
+    	embed.setColor(Color.magenta);
+    	channel.sendMessage(embed.build()).queue();
+    }
+    public static void sendPresetsEmbed(MessageChannel channel, User user) {  //An embed that is sent to tell the user about the presets
+    	EmbedBuilder embed = new EmbedBuilder();
+    	embed.setTitle("Presets");
+    	embed.setDescription("Here are all of my presets! They only work for 14x14 boards right now.");
+    	embed.addField("The Glider", "ID: `glider`", false);
+    	embed.addField("The Bipole", "ID: `bipole`", false);
+    	embed.addField("The Bookends", "ID: `bookends`", false);
+    	embed.addField("The Bullet", "ID: `bullet`", false);
+    	embed.addField("The Bun", "ID: `bun`", false);
+    	embed.addField("The Butterfly", "ID: `butterfly`", false);
+    	embed.addField("The Cap", "ID: `cap`", false);
+    	embed.addField("The Century", "ID: `century`", false);
+    	embed.addField("The Heptomino", "ID: `heptomino`", false);
+    	embed.addField("Usage: " + GameOfLife.prefix + "preset [presetID]", "", false);
     	embed.addField("Player", user.getAsMention(), false);
     	embed.setColor(Color.magenta);
     	channel.sendMessage(embed.build()).queue();

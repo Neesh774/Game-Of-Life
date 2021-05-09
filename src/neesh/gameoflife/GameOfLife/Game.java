@@ -18,6 +18,9 @@ public class Game {
 	public static int[][] getGrid() {  //Method that will return the grid for a certain Game
 		return grid;
 	}
+	public static void setGrid(int[][] preset){
+		grid = preset;
+	}
 	public static int getGen() {
 		return generation;
 	}
