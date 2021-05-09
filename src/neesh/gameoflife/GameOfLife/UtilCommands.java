@@ -60,6 +60,9 @@ public class UtilCommands extends ListenerAdapter{
 	        long latency = System.currentTimeMillis() - time;  //Gets the time after sending a message
 	        channel.sendMessage("Pong! Your latency is " + latency + " ms.").queue();  //Sends the message
 		}
+		else if(command.equalsIgnoreCase("about")) {
+			Embeds.sendGOLEmbed(channel, author);
+		}
 	}
 }
 

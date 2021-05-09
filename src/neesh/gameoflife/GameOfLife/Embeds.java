@@ -37,11 +37,20 @@ public class Embeds {
         	Game.setLast(message);  //Sets the last message in a game, which lets me do things like edit them.
         });
     }
+    public static void sendGOLEmbed(MessageChannel channel, User user) { //An embed that explains The Game of Life
+    	EmbedBuilder embed = new EmbedBuilder();
+    	embed.setTitle("The Game of Life");
+    	embed.setDescription("The Game of Life is a simulation game that contains living cells and dead cells. If a living cell, a white square, is surrounded by more than 3 black squares, it will die due to overpopulation. If it is surrounded by less than 3 black squares, it will also die, due to underpopulation. If a dead cell, a black square, is surrounded by exactly 3 white squares, it will come to life.");
+    	embed.addField("Player", user.getAsMention(), false);
+    	embed.setColor(Color.magenta);
+    	channel.sendMessage(embed.build()).queue();
+    }
     public static void sendInfoEmbed(MessageChannel channel, User user) { //An embed that sends during the help command
     	String prefix = GameOfLife.prefix;
     	EmbedBuilder embed = new EmbedBuilder();
     	embed.setTitle("Game of Life");
     	embed.setDescription("[] = required, <> = optional");
+    	embed.addField("`" + prefix + "about`", "Explains the Game of Life.", false);
     	embed.addField("`" + prefix + "start`", "Starts a game if you don't already have one.", false);
     	embed.addField("`" + prefix + "stop`", "Stops an active game if you have one.", false);
     	embed.addField("`" + prefix + "ping`", "Pong!", false);
@@ -50,6 +59,7 @@ public class Embeds {
     	embed.addField("`" + prefix + "presets`", "Lists out all of my presets", false);
     	embed.addField("`" + prefix + "preset [presetID]`", "Loads the specified preset", false);
     	embed.addField("My prefix: ", GameOfLife.prefix, false);
+    	embed.addField("This bot is still in development. DM 🧀♅ツNeeshツ♅🧀#3609 if you want to report anything.", "", false);
     	embed.addField("Player", user.getAsMention(), false);
     	embed.setColor(Color.magenta);
     	channel.sendMessage(embed.build()).queue();
