@@ -11,7 +11,9 @@ Multiple people can play the game in the same channel, or different channels.
 ### Dead Grid Detection
 GoL will automatically end your game if your grid dies, and no cells remain.
 ### Custom Prefixes
-To prevent GoL from conflicting with other bots, admins can choose any prefix to preface Sokobot's commands. They can even be multiple letters.
+To prevent GoL from conflicting with other bots, admins can choose any prefix to preface GoL's commands. They can even be multiple letters.
+### Presets
+GoL has a couple of presets that start interesting designs. Players will soon be able to add presets using their current grid.
 
 ## Commands
 ### User
