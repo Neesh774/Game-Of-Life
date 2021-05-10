@@ -24,6 +24,7 @@ GoL will automatically end a game if not updated after 5 minutes. This time is c
 ### Admin
 - ``golsetprefix [prefix]`` can be used to change the prefix of the bot.
 - ``golsize [size]`` can be used to change the size of the grids(Grids can only go up to size 14 because of limitations in Discord Embeds).
+- ``goltimeout [time]`` can be used to change the time it takes for a game to time out, in minutes. It has to be in between 1 and 15 minutes.
 
 ## To be added
 - A toggleable automatic feature that will update the game to the next generation every 5 seconds.

@@ -149,7 +149,7 @@ public class Embeds {
     public static void sendTimeOutEmbed(MessageChannel channel, User user) {  //An embed that is sent when a game times out.
     	EmbedBuilder embed = new EmbedBuilder();
     	embed.setTitle("Your game timed out");
-    	embed.setDescription("It has been 5 minutes since you last updated your game.");
+    	embed.setDescription("It has been " + GameOfLife.timeOutTimeMinutes + " minutes since you last updated your game.");
     	embed.addField("Player", user.getAsMention(), false);
     	embed.setColor(Color.magenta);
     	channel.sendMessage(embed.build()).queue();
