@@ -104,5 +104,26 @@ public class GameCommands extends ListenerAdapter{
 		else if(command.equalsIgnoreCase("presets")) {
 			Embeds.sendPresetsEmbed(channel, author);
 		}
+		//=====================================TimeOut============================
+		else if(command.equalsIgnoreCase("timeout")) {
+			if(!event.getMember().hasPermission(Permission.ADMINISTRATOR)) {  //Makes sure that the player actually has an administrator permission in the server they're in
+				Embeds.sendNoPermissionsEmbed(channel, author);
+				return;
+			}
+			try {
+				int newtime = Integer.parseInt(args[1]);
+				if(newtime > 15 || newtime < 1) {  //The embed won't properly send if it isn't within these limits.
+					Embeds.sendErrorEmbed(channel, author);
+				}
+				else {
+					GameOfLife.timeOutTimeMinutes = newtime;
+					Embeds.sendSuccessTimeOutEmbed(channel, author, newtime);
+				}
+			}
+			catch(Error e) {  //Thrown if the argument either isn't there or isn't an integer
+				e.printStackTrace();
+				Embeds.sendErrorEmbed(channel, author);
+			}
+		}
 	}
 }

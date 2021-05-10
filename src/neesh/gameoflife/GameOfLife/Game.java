@@ -1,19 +1,27 @@
 package neesh.gameoflife.GameOfLife;
 
-import java.awt.Color;
+import java.time.Instant;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 
 public class Game {
 	private static int[][] grid;
 	private static int generation;
 	private static Message lastMessage;
-	public Game() {  //Constructor
+	private static Timer timer;
+	private static User player;
+	public Game(User nplayer) {  //Constructor
 		grid = new int[GameOfLife.size][GameOfLife.size];
 		generation = 0;
+		player = nplayer;
+		timer = new Timer();
+	}
+	public static void setTimer() {
+		TimerTask timeout = new TimeOut(lastMessage.getChannel(), player);
+		timer.schedule(timeout, 1000 * 60 * GameOfLife.timeOutTimeMinutes);
 	}
 	public static int[][] getGrid() {  //Method that will return the grid for a certain Game
 		return grid;
@@ -26,6 +34,10 @@ public class Game {
 	}
 	public static Message getLast() {
 		return lastMessage;
+	}
+	public static void purgeTimer() {
+		timer.cancel();
+		timer = new Timer();
 	}
 	public static void setLast(Message message) {
 		lastMessage = message;

@@ -14,7 +14,8 @@ GoL will automatically end your game if your grid dies, and no cells remain.
 To prevent GoL from conflicting with other bots, admins can choose any prefix to preface GoL's commands. They can even be multiple letters.
 ### Presets
 GoL has a couple of presets that start interesting designs. Players will soon be able to add presets using their current grid.
-
+### Time Out
+GoL will automatically end a game if not updated after 5 minutes. This time is configurable between the times of 1 minute and 15 minutes.
 ## Commands
 ### User
 - ``golstart`` can be used to start a game if you aren't already in one.
@@ -26,4 +27,3 @@ GoL has a couple of presets that start interesting designs. Players will soon be
 
 ## To be added
 - A toggleable automatic feature that will update the game to the next generation every 5 seconds.
-- Games that time out if not updated after 5 minutes.

@@ -28,13 +28,13 @@ public class Embeds {
         GameUtil.getGame(user);
 		embed.addField("Generation", String.valueOf(Game.getGen()), false);
         embed.addField("Player", user.getAsMention(), false);  //This getAsMention thing just pings the person that sent the command for the embed
-        
         embed.setColor(Color.magenta);
         channel.sendMessage(embed.build()).queue(message ->{  //I use a method inside of the queue method, which allows me to do things directly after the message sends. I can't do this normally because it's an async command.
         	message.addReaction("U+25B6").queue();  //Play button
         	message.addReaction("U+23F9").queue();  //Refresh button
         	message.addReaction("U+1F501").queue(); //Stop button
         	Game.setLast(message);  //Sets the last message in a game, which lets me do things like edit them.
+        	Game.setTimer();
         });
     }
     public static void sendGOLEmbed(MessageChannel channel, User user) { //An embed that explains The Game of Life
@@ -120,6 +120,14 @@ public class Embeds {
     	embed.setColor(Color.magenta);
     	channel.sendMessage(embed.build()).queue();
     }
+    public static void sendSuccessTimeOutEmbed(MessageChannel channel, User user, int time) { //An embed that is sent when a time out time is successfully changed
+    	EmbedBuilder embed = new EmbedBuilder();
+    	embed.setTitle("Success!");
+    	embed.setDescription("I successfully set the new time out time to " + time + " minutes.");
+    	embed.addField("Player", user.getAsMention(), false);
+    	embed.setColor(Color.magenta);
+    	channel.sendMessage(embed.build()).queue();
+    }
     public static void sendPresetsEmbed(MessageChannel channel, User user) {  //An embed that is sent to tell the user about the presets
     	EmbedBuilder embed = new EmbedBuilder();
     	embed.setTitle("Presets");
@@ -134,6 +142,14 @@ public class Embeds {
     	embed.addField("The Century", "ID: `century`", false);
     	embed.addField("The Heptomino", "ID: `heptomino`", false);
     	embed.addField("Usage: " + GameOfLife.prefix + "preset [presetID]", "", false);
+    	embed.addField("Player", user.getAsMention(), false);
+    	embed.setColor(Color.magenta);
+    	channel.sendMessage(embed.build()).queue();
+    }
+    public static void sendTimeOutEmbed(MessageChannel channel, User user) {  //An embed that is sent when a game times out.
+    	EmbedBuilder embed = new EmbedBuilder();
+    	embed.setTitle("Your game timed out");
+    	embed.setDescription("It has been 5 minutes since you last updated your game.");
     	embed.addField("Player", user.getAsMention(), false);
     	embed.setColor(Color.magenta);
     	channel.sendMessage(embed.build()).queue();

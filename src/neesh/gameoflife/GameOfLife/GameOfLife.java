@@ -18,6 +18,7 @@ public class GameOfLife {
 	public static int size = 14;  //default size for the grid(14x14)
 	public static String deadCell = "⬛";  //default emote to use for dead cells
 	public static String liveCell = "⬜";  //default emote to use for living cells
+	public static int timeOutTimeMinutes = 5;
 	public static void main(String[] args) throws FileNotFoundException, LoginException {
 		Scanner tk = new Scanner(new File("token.txt"));
 		String token = tk.nextLine();    //Tells the program to get the token from the token.txt file, because it's supposed to be secret.
