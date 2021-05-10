@@ -125,5 +125,22 @@ public class GameCommands extends ListenerAdapter{
 				Embeds.sendErrorEmbed(channel, author);
 			}
 		}
+		//=====================================Playing============================
+		else if(command.equalsIgnoreCase("play") || message.equalsIgnoreCase("p")) {
+			if(!GameUtil.hasGame(author)) {
+				Embeds.sendNoGameEmbed(channel, author);
+				return;
+			}
+			if(Game.getPlaying()) {
+				GameUtil.getGame(author);
+				channel.sendMessage("Stopped playing.").queue();
+				Game.togglePlay();
+			}
+			else {
+				GameUtil.getGame(author);
+				channel.sendMessage("Started playing.").queue();
+				Game.togglePlay();
+			}
+		}
 	}
 }

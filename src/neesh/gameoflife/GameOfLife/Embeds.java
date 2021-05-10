@@ -33,6 +33,7 @@ public class Embeds {
         	message.addReaction("U+25B6").queue();  //Play button
         	message.addReaction("U+23F9").queue();  //Refresh button
         	message.addReaction("U+1F501").queue(); //Stop button
+        	message.addReaction("U+23EF").queue();  //Play/Pause button
         	Game.setLast(message);  //Sets the last message in a game, which lets me do things like edit them.
         	Game.setTimer();
         });

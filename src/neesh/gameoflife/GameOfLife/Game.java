@@ -12,12 +12,15 @@ public class Game {
 	private static int generation;
 	private static Message lastMessage;
 	private static Timer timer;
+	private static Timer playTimer;
 	private static User player;
+	private static boolean isPlaying;
 	public Game(User nplayer) {  //Constructor
 		grid = new int[GameOfLife.size][GameOfLife.size];
 		generation = 0;
 		player = nplayer;
 		timer = new Timer();
+		playTimer = new Timer();
 	}
 	public static void setTimer() {
 		TimerTask timeout = new TimeOut(lastMessage.getChannel(), player);
@@ -32,6 +35,16 @@ public class Game {
 	public static int getGen() {
 		return generation;
 	}
+	public static void togglePlay() {
+		isPlaying = !isPlaying;
+		if(!isPlaying) {
+			playTimer.cancel();
+			playTimer = new Timer();
+		}
+		else {
+			play();
+		}
+	}
 	public static Message getLast() {
 		return lastMessage;
 	}
@@ -39,8 +52,19 @@ public class Game {
 		timer.cancel();
 		timer = new Timer();
 	}
+	public static void purgePlayTimer() {
+		playTimer.cancel();
+		playTimer = new Timer();
+	}
+	public static boolean getPlaying() {
+		return isPlaying;
+	}
 	public static void setLast(Message message) {
 		lastMessage = message;
+	}
+	public static void play() {
+		TimerTask play = new PlayTimerTask(lastMessage.getChannel(), player);
+		playTimer.schedule(play, 500, 1000);
 	}
 	public static boolean isDead() {  //Checks if a grid is dead with no living cells on it.
 		for(int i = 0;i < grid.length;i ++) {
@@ -115,5 +139,6 @@ public class Game {
 				grid[i][g] = ran;
 			}
 		}
+		generation = 0;
 	}
 }
