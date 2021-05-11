@@ -94,18 +94,11 @@ public class GameReactionListener extends ListenerAdapter{
 			Game.randomizeGrid();
 			GameUtil.editLast(user);
 		}
-		else if(emote.equals("RE:U+23ef")) {
+		else if(emote.equals("RE:U+23ef")) {  //This is the play/pause button, which the player will use if they want to play their game automatically.
 			GameUtil.getGame(user);
-			if(Game.getPlaying()) {
-				GameUtil.getGame(user);
-				channel.sendMessage("Stopped playing.").queue();
-				Game.togglePlay();
-			}
-			else {
-				GameUtil.getGame(user);
-				channel.sendMessage("Started playing.").queue();
-				Game.togglePlay();
-			}
+			if(Game.getPlaying()) channel.sendMessage("Stopped playing.").queue();  //Sends the appropriate message based on if they're stopping or starting.
+			else channel.sendMessage("Started playing.").queue();
+			Game.togglePlay();
 		}
 	}
 }

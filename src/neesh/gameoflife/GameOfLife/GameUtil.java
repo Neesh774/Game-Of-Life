@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.User;
 
 public class GameUtil {
 	public static HashMap<User, Game> games = new HashMap<>();  //A HashMap that links games to users.
-	public static boolean hasGame(User author) {
+	public static boolean hasGame(User author	) {
 		return games.containsKey(author);
 	}
 	public static void createGame(User author) {  //A method used to create a Game object, randomize it, and add it to the global games HashMap
@@ -31,9 +31,10 @@ public class GameUtil {
 		display.setTitle("Game Of Life");
 		getGame(author);
 		display.setDescription(Game.getGridString());
-		display.addField("Type r to refresh the grid, or n to go to the next generation.", "", false);
         display.setColor(Color.magenta);
         getGame(author);
+        display.addField("Type r to refresh the grid, s to stop the game, or n to go to the next generation.	", "", false);  //The boolean at the end of the addField methods represent whether or not they will be inline.
+        display.addField("You can also use :arrow_forward: for the next generation, :repeat: to refresh the grid, :stop_button: to end the game, or :play_pause: to play the game automatically.", "", false);
 		display.addField("Generation", String.valueOf(Game.getGen()), false);
 		display.addField("Requested by ", author.getAsMention(), true);
 		games.get(author);

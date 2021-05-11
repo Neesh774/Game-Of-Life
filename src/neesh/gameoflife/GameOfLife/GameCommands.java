@@ -93,11 +93,13 @@ public class GameCommands extends ListenerAdapter{
 			if(GameUtil.hasGame(author)) {
 				GameUtil.getGame(author);
 				Game.setGrid(Presets.getPreset(args[1]));
+				GameOfLife.size = 14;
 				GameUtil.editLast(author);
 			}
 			else {
 				GameUtil.createGame(author);
 				Game.setGrid(Presets.getPreset(args[1]));
+				GameOfLife.size = 14;
 				Embeds.sendGameEmbed(channel, GameUtil.getGame(author), author);
 			}
 		}
@@ -112,7 +114,7 @@ public class GameCommands extends ListenerAdapter{
 			}
 			try {
 				int newtime = Integer.parseInt(args[1]);
-				if(newtime > 15 || newtime < 1) {  //The embed won't properly send if it isn't within these limits.
+				if(newtime > 15 || newtime < 1) { 
 					Embeds.sendErrorEmbed(channel, author);
 				}
 				else {

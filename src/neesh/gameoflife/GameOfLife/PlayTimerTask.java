@@ -12,14 +12,20 @@ public class PlayTimerTask extends TimerTask{
 		player = nplayer;
 		channel = nchannel;
 	}
-	public void run() {
-		GameUtil.getGame(player);
-		Game.nextGen();
-		if(Game.isDead()) {
-			GameUtil.endGame(player);
-			Embeds.sendDeadGameEmbed(channel, player);
-			return;
+	public void run() {  //Makes sure the player has a game, and then does the protocol for the next generation, which is making sure it isn't dead and then editing the message.
+		if(GameUtil.hasGame(player)) {
+			GameUtil.getGame(player);
+			Game.nextGen();
+			if(Game.isDead()) {
+				GameUtil.endGame(player);
+				Embeds.sendDeadGameEmbed(channel, player);
+				Game.purgePlayTimer();
+				return;
+			}
+			GameUtil.editLast(player);
 		}
-		GameUtil.editLast(player);
+		else {
+			Game.purgePlayTimer();	
+		}
 	}
 }

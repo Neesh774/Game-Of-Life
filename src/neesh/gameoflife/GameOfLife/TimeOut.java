@@ -12,7 +12,7 @@ public class TimeOut extends TimerTask{
 		channel = nchannel;
 		author = nauthor;
 	}
-	public void run() {
+	public void run() {  //The thing that will run when the timer completes, which is ending the game if the user even still has the game and hasn't stopped it.
 		if(GameUtil.hasGame(author)) {
 			Embeds.sendTimeOutEmbed(channel, author);
 			GameUtil.endGame(author);

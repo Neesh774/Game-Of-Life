@@ -35,7 +35,7 @@ public class Game {
 	public static int getGen() {
 		return generation;
 	}
-	public static void togglePlay() {
+	public static void togglePlay() {  //runs the play timer
 		isPlaying = !isPlaying;
 		if(!isPlaying) {
 			playTimer.cancel();
@@ -48,11 +48,11 @@ public class Game {
 	public static Message getLast() {
 		return lastMessage;
 	}
-	public static void purgeTimer() {
+	public static void purgeTimer() {  //cancels the time out timer
 		timer.cancel();
 		timer = new Timer();
 	}
-	public static void purgePlayTimer() {
+	public static void purgePlayTimer() {  //cancels the play timer
 		playTimer.cancel();
 		playTimer = new Timer();
 	}
@@ -62,7 +62,7 @@ public class Game {
 	public static void setLast(Message message) {
 		lastMessage = message;
 	}
-	public static void play() {
+	public static void play() {  //runs the play timer task every 1 second.
 		TimerTask play = new PlayTimerTask(lastMessage.getChannel(), player);
 		playTimer.schedule(play, 500, 1000);
 	}
@@ -96,20 +96,15 @@ public class Game {
 		int[][] future = new int[size][size];
 		  
         // Loop through every cell
-        for (int l = 1; l < size-1; l++)
+        for (int l = 0; l < size; l++)
         {
-            for (int m = 1; m < size-1; m++)
+            for (int m = 0; m < size; m++)
             {
                 // finding number of surrounding living cells
-                int aliveNeighbours = 0;
-                for (int i = -1; i <= 1; i++)
-                    for (int j = -1; j <= 1; j++)
-                    	aliveNeighbours += grid[l + i][m + j];
-  
+                int aliveNeighbours = getSurrounding(l, m);
                 // The cell needs to be subtracted from
                 // its neighbours as it was counted before
                 aliveNeighbours -= grid[l][m];
-  
                 // Implementing the Rules of Life
   
                 // Cell is lonely and dies
@@ -131,6 +126,20 @@ public class Game {
         }
         generation++;
         grid = future;	
+	}
+	public static int getSurrounding(int x, int y) {  //gets the surrounding cells
+		int result = 0;
+		for(int i = -1;i < 2; i ++) {
+			for(int g = -1; g< 2; g++) {
+				try {
+					result += grid[x+i][y+g];
+				}
+				catch(IndexOutOfBoundsException e) {
+					continue;
+				}
+			}
+		}
+		return result-1;
 	}
 	public static void randomizeGrid() {  //Randomizes the grid, setting each cell to either 1 or 0, alive or dead
 		for(int i = 0;i < grid.length;i ++) {

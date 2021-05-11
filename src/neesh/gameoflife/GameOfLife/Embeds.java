@@ -24,7 +24,7 @@ public class Embeds {
         embed.setTitle("Game of Life");	
         embed.setDescription(grid);
         embed.addField("Type r to refresh the grid, s to stop the game, or n to go to the next generation.	", "", false);  //The boolean at the end of the addField methods represent whether or not they will be inline.
-        embed.addField("You can also use :arrow_forward: for the next generation, :repeat: to refresh the grid, and :stop_button: to end the game.", "", false);
+        embed.addField("You can also use :arrow_forward: for the next generation, :repeat: to refresh the grid, :stop_button: to end the game, or :play_pause: to play the game automatically.", "", false);
         GameUtil.getGame(user);
 		embed.addField("Generation", String.valueOf(Game.getGen()), false);
         embed.addField("Player", user.getAsMention(), false);  //This getAsMention thing just pings the person that sent the command for the embed
@@ -59,6 +59,7 @@ public class Embeds {
     	embed.addField("`" + prefix + "setprefix [prefix]`", "Changes the prefix of the bot.", false);
     	embed.addField("`" + prefix + "presets`", "Lists out all of my presets", false);
     	embed.addField("`" + prefix + "preset [presetID]`", "Loads the specified preset", false);
+    	embed.addField("`" + prefix + "timeout [time]`", "Sets the time it takes for a game to time out in minutes.", false);
     	embed.addField("My prefix: ", GameOfLife.prefix, false);
     	embed.addField("This bot is still in development. DM 🧀♅ツNeeshツ♅🧀#3609 if you want to report anything.", "", false);
     	embed.addField("Player", user.getAsMention(), false);
