@@ -89,7 +89,7 @@ public class Game {
 				}
 			}
 		}
-		return result-1;
+		return result;
 	}
 	public static void randomizeGrid() {  //Randomizes the grid, setting each cell to either 1 or 0, alive or dead
 		for(int i = 0;i < grid.length;i ++) {
