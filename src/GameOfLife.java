@@ -19,8 +19,8 @@ import javax.swing.border.EtchedBorder;
 public class GameOfLife {
 	public static int SIZE = 30;
 	public static int TIMEOUT_TIME_MINUTES = 5;
-	public static String DEADCELL = "whiteCell.png";
-	public static String LIVECELL = "blackCell.png";
+	public static String DEADCELL = "assets/whiteCell.png";
+	public static String LIVECELL = "assets/blackCell.png";
 	public static Game curGame = new Game();
 	public static JFrame f = new JFrame("Nimbus Look and Feel");
 	static JPanel board = new JPanel(new GridLayout(30, 30));
@@ -153,7 +153,7 @@ class liveCellChanged implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		JComboBox<String> cb = (JComboBox<String>)e.getSource();
 		String color = (String)cb.getSelectedItem();
-		GameOfLife.LIVECELL = color.toLowerCase() + "Cell.png";
+		GameOfLife.LIVECELL = "assets/" + color.toLowerCase() + "Cell.png";
 		GameOfLife.updateGrid();
 	}
 }
@@ -162,7 +162,7 @@ class deadCellChanged implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		JComboBox<String> cb = (JComboBox<String>)e.getSource();
 		String color = (String)cb.getSelectedItem();
-		GameOfLife.DEADCELL = color.toLowerCase() + "Cell.png";
+		GameOfLife.DEADCELL = "assets/" + color.toLowerCase() + "Cell.png";
 		GameOfLife.updateGrid();
 	}
 }
