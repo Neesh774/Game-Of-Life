@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -24,13 +26,17 @@ public class GameOfLife {
 	public static int TIMEOUT_TIME_MINUTES = 5;
 	public static String DEADCELL = "assets/whiteCell.png";
 	public static String LIVECELL = "assets/blackCell.png";
+	
 	public static Game curGame = new Game();
 	public static JFrame f = new JFrame("Nimbus Look and Feel");
 	static JPanel board = new JPanel(new GridLayout(SIZE, SIZE));
 	static JSpinner size = new JSpinner(new SpinnerNumberModel(30, 5, 40, 1));
+	
 	static String[] colors = {"Black", "White", "Blue", "Green","Orange", "Pink", "Purple", "Red", "Yellow"};
 	static JComboBox<String> liveColors = new JComboBox<>(colors);
 	static JComboBox<String> deadColors = new JComboBox<>(colors);
+	static boolean isPlaying = false;
+	static Timer playingTimer = new Timer();
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 
@@ -42,15 +48,26 @@ public class GameOfLife {
 		JButton next = new JButton("▶");
 		JButton rules = new JButton("📜");
 		JButton settings = new JButton("⚙");
+		JButton play = new JButton("⏯");
+		JButton clear = new JButton("⭕");
 
 		refresh.setBounds(20, 560, 80, 80);
 		refresh.addActionListener(new RefreshGrid());
+		refresh.setToolTipText("Refresh your grid with a completely random one.");
 		next.setBounds(20, 660, 80, 80);
 		next.addActionListener(new NextGen());
+		next.setToolTipText("Go to the next generation of your grid.");
 		rules.setBounds(20, 20, 40, 40);
 		rules.addActionListener(new showRules());
+		rules.setToolTipText("View the rules for Conway's Game of Life");
 		settings.setBounds(20, 60, 40, 40);
 		settings.addActionListener(new showSettings());
+		settings.setToolTipText("Change the settings for your game.");
+		play.setBounds(20, 360, 80, 80);
+		play.addActionListener(new playGame());
+		clear.setBounds(20, 460, 80, 80);
+		clear.addActionListener(new clearGrid());
+		clear.setToolTipText("Clear your grid and everything on it.");
 		liveColors.addActionListener(new liveCellChanged());
 		deadColors.addActionListener(new deadCellChanged());
 
@@ -58,6 +75,8 @@ public class GameOfLife {
 		f.add(next);
 		f.add(rules);
 		f.add(settings);
+		f.add(clear);
+		f.add(play);
 		initGrid();
 		f.setSize(800, 800);
 		f.setLayout(null);
@@ -70,17 +89,25 @@ public class GameOfLife {
 		board.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(), "Generation: " + Game.getGen()));
 		board.setVisible(true);
 		int[][] grid = Game.getGrid();
+		int x = 130;
+		int y = 30;
 		for(int i = 0;i < grid.length;i ++) {
 			for(int g = 0;g < grid[i].length; g ++) {
 				if(grid[i][g] == 1) {
-					JLabel live = new JLabel(new ImageIcon(new ImageIcon(LIVECELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
+					JButton live = new JButton(new ImageIcon(new ImageIcon(LIVECELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
+					live.addActionListener(new liveCellClicked(i, g));
+					live.setBounds(x, y, 600/SIZE, 600/SIZE);
 					board.add(live);
 				}
 				else {
-					JLabel dead = new JLabel(new ImageIcon(new ImageIcon(DEADCELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
+					JButton dead = new JButton(new ImageIcon(new ImageIcon(DEADCELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
+					dead.addActionListener(new deadCellClicked(i, g));
+					dead.setBounds(x, y, 600/SIZE, 600/SIZE);
 					board.add(dead);
 				}
+				x += 600/SIZE;
 			}
+			y += 600/SIZE;
 		}
 		f.add(board);
 	}
@@ -91,17 +118,25 @@ public class GameOfLife {
 		board.repaint();
 		int[][] grid = Game.getGrid();
 		board.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(), "Generation: " + Game.getGen()));
+		int x = 130;
+		int y = 30;
 		for(int i = 0;i < grid.length;i ++) {
 			for(int g = 0;g < grid[i].length; g ++) {
 				if(grid[i][g] == 1) {
-					JLabel live = new JLabel(new ImageIcon(new ImageIcon(LIVECELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
+					JButton live = new JButton(new ImageIcon(new ImageIcon(LIVECELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
+					live.addActionListener(new liveCellClicked(i, g));
+					live.setBounds(x, y, 600/SIZE, 600/SIZE);
 					board.add(live);
 				}
 				else {
-					JLabel dead = new JLabel(new ImageIcon(new ImageIcon(DEADCELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
+					JButton dead = new JButton(new ImageIcon(new ImageIcon(DEADCELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
+					dead.addActionListener(new deadCellClicked(i, g));
+					dead.setBounds(x, y, 600/SIZE, 600/SIZE);
 					board.add(dead);
 				}
+				x += 600/SIZE;
 			}
+			y += 600/SIZE;
 		}
 		board.revalidate();
 	}
@@ -184,4 +219,56 @@ class sizeChanged implements ChangeListener{
 		Game.randomizeGrid();
 		GameOfLife.updateGrid();
 	}	
+}
+class liveCellClicked implements ActionListener{
+	int x;
+	int y;
+	public liveCellClicked(int nx, int ny) {
+		x = nx;
+		y = ny;
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Game.getGrid()[x][y] = 0;
+		GameOfLife.updateGrid();
+	}
+}
+class deadCellClicked implements ActionListener{
+	int x;
+	int y;
+	public deadCellClicked(int nx, int ny) {
+		x = nx;
+		y = ny;
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Game.getGrid()[x][y] = 1;
+		GameOfLife.updateGrid();
+	}
+}
+class clearGrid implements ActionListener{
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Game.setGrid(new int[GameOfLife.SIZE][GameOfLife.SIZE]);
+		GameOfLife.updateGrid();
+	}
+	
+}
+class playGame implements ActionListener{
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(GameOfLife.isPlaying) {
+			GameOfLife.isPlaying = false;
+			System.out.println("Stopped playing");
+			GameOfLife.playingTimer.cancel();
+			GameOfLife.playingTimer = new Timer();
+		}
+		else {
+			GameOfLife.isPlaying = true;
+			System.out.println("Started playing");
+			TimerTask playTimer = new PlayTimerTask();
+			GameOfLife.playingTimer.schedule(playTimer, 500, 5000);
+		}
+	}
 }

@@ -6,3 +6,4 @@ Simply run the main file, GameOfLife.java, and you'll see your grid along with t
 
 ## Coming Soon
 - Ability to play/pause your game
+- Ability to create a grid of your own
