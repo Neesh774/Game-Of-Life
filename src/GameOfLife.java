@@ -2,10 +2,9 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
+import javax.swing.Timer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,7 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class GameOfLife {
-	public static int SIZE = 30;
+	public static int SIZE = 10;
 	public static int TIMEOUT_TIME_MINUTES = 5;
 	public static String DEADCELL = "assets/whiteCell.png";
 	public static String LIVECELL = "assets/blackCell.png";
@@ -30,13 +29,13 @@ public class GameOfLife {
 	public static Game curGame = new Game();
 	public static JFrame f = new JFrame("Nimbus Look and Feel");
 	static JPanel board = new JPanel(new GridLayout(SIZE, SIZE));
-	static JSpinner size = new JSpinner(new SpinnerNumberModel(30, 5, 40, 1));
+	static JSpinner size = new JSpinner(new SpinnerNumberModel(10, 5, 40, 1));
 	
 	static String[] colors = {"Black", "White", "Blue", "Green","Orange", "Pink", "Purple", "Red", "Yellow"};
 	static JComboBox<String> liveColors = new JComboBox<>(colors);
 	static JComboBox<String> deadColors = new JComboBox<>(colors);
 	static boolean isPlaying = false;
-	static Timer playingTimer = new Timer();
+	static Timer playingTimer;
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 
@@ -65,6 +64,7 @@ public class GameOfLife {
 		settings.setToolTipText("Change the settings for your game.");
 		play.setBounds(20, 360, 80, 80);
 		play.addActionListener(new playGame());
+		play.setBackground(Color.red);
 		clear.setBounds(20, 460, 80, 80);
 		clear.addActionListener(new clearGrid());
 		clear.setToolTipText("Clear your grid and everything on it.");
@@ -115,7 +115,6 @@ public class GameOfLife {
 		board.setLayout(new GridLayout(SIZE, SIZE));
 		board.setBounds(130, 30, 600, 600);
 		board.removeAll();
-		board.repaint();
 		int[][] grid = Game.getGrid();
 		board.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(), "Generation: " + Game.getGen()));
 		int x = 130;
@@ -253,22 +252,30 @@ class clearGrid implements ActionListener{
 		Game.setGrid(new int[GameOfLife.SIZE][GameOfLife.SIZE]);
 		GameOfLife.updateGrid();
 	}
-	
 }
 class playGame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(GameOfLife.isPlaying) {
 			GameOfLife.isPlaying = false;
+			GameOfLife.playingTimer.stop();
+			((JButton)e.getSource()).setBackground(Color.red);
 			System.out.println("Stopped playing");
-			GameOfLife.playingTimer.cancel();
-			GameOfLife.playingTimer = new Timer();
+			
 		}
 		else {
 			GameOfLife.isPlaying = true;
-			System.out.println("Started playing");
-			TimerTask playTimer = new PlayTimerTask();
-			GameOfLife.playingTimer.schedule(playTimer, 500, 5000);
+			((JButton)e.getSource()).setBackground(Color.green);
+			GameOfLife.playingTimer = new Timer(2000, new GamePlayTimer());
+			GameOfLife.playingTimer.start();
+			System.out.println("Started Playing");
 		}
+		
 	}
+}
+class GamePlayTimer implements ActionListener{
+	public void actionPerformed(ActionEvent evt) {
+        Game.nextGen();
+        GameOfLife.updateGrid();
+    }
 }
