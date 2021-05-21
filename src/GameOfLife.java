@@ -11,10 +11,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class GameOfLife {
 	public static int SIZE = 30;
@@ -23,8 +26,8 @@ public class GameOfLife {
 	public static String LIVECELL = "assets/blackCell.png";
 	public static Game curGame = new Game();
 	public static JFrame f = new JFrame("Nimbus Look and Feel");
-	static JPanel board = new JPanel(new GridLayout(30, 30));
-	static JLabel[][] cells = new JLabel[30][30];
+	static JPanel board = new JPanel(new GridLayout(SIZE, SIZE));
+	static JSpinner size = new JSpinner(new SpinnerNumberModel(30, 5, 40, 1));
 	static String[] colors = {"Black", "White", "Blue", "Green","Orange", "Pink", "Purple", "Red", "Yellow"};
 	static JComboBox<String> liveColors = new JComboBox<>(colors);
 	static JComboBox<String> deadColors = new JComboBox<>(colors);
@@ -40,9 +43,9 @@ public class GameOfLife {
 		JButton rules = new JButton("📜");
 		JButton settings = new JButton("⚙");
 
-		refresh.setBounds(300, 600, 80, 80);
+		refresh.setBounds(20, 560, 80, 80);
 		refresh.addActionListener(new RefreshGrid());
-		next.setBounds(420, 600, 80, 80);
+		next.setBounds(20, 660, 80, 80);
 		next.addActionListener(new NextGen());
 		rules.setBounds(20, 20, 40, 40);
 		rules.addActionListener(new showRules());
@@ -63,18 +66,18 @@ public class GameOfLife {
 	}
 
 	public static void initGrid() {
-		board.setBounds(125, 40, 550, 550);
+		board.setBounds(130, 30, 600, 600);
 		board.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(), "Generation: " + Game.getGen()));
 		board.setVisible(true);
 		int[][] grid = Game.getGrid();
 		for(int i = 0;i < grid.length;i ++) {
 			for(int g = 0;g < grid[i].length; g ++) {
 				if(grid[i][g] == 1) {
-					JLabel live = new JLabel(new ImageIcon(LIVECELL));
+					JLabel live = new JLabel(new ImageIcon(new ImageIcon(LIVECELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
 					board.add(live);
 				}
 				else {
-					JLabel dead = new JLabel(new ImageIcon(DEADCELL));
+					JLabel dead = new JLabel(new ImageIcon(new ImageIcon(DEADCELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
 					board.add(dead);
 				}
 			}
@@ -82,6 +85,8 @@ public class GameOfLife {
 		f.add(board);
 	}
 	public static void updateGrid() {
+		board.setLayout(new GridLayout(SIZE, SIZE));
+		board.setBounds(130, 30, 600, 600);
 		board.removeAll();
 		board.repaint();
 		int[][] grid = Game.getGrid();
@@ -89,11 +94,11 @@ public class GameOfLife {
 		for(int i = 0;i < grid.length;i ++) {
 			for(int g = 0;g < grid[i].length; g ++) {
 				if(grid[i][g] == 1) {
-					JLabel live = new JLabel(new ImageIcon(LIVECELL));
+					JLabel live = new JLabel(new ImageIcon(new ImageIcon(LIVECELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
 					board.add(live);
 				}
 				else {
-					JLabel dead = new JLabel(new ImageIcon(DEADCELL));
+					JLabel dead = new JLabel(new ImageIcon(new ImageIcon(DEADCELL).getImage().getScaledInstance(600/SIZE, 600/SIZE, 1)));
 					board.add(dead);
 				}
 			}
@@ -107,15 +112,19 @@ public class GameOfLife {
 		JOptionPane.showMessageDialog(null, rulesString, "The Game of Life Rules", JOptionPane.INFORMATION_MESSAGE, null);
 		rules.setVisible(true);
 	}
-	public static void addToolbar() {
+	public static void showSettings() {
 		JOptionPane settings = new JOptionPane();
 		JPanel options = new JPanel();
 		JLabel liveCells = new JLabel("Living Cell Color: ");
 		JLabel deadCells = new JLabel("Dead Cell Color: ");
+		JLabel cellSize = new JLabel("Grid Size: ");
+		size.addChangeListener(new sizeChanged());
 		options.add(liveCells);
 		options.add(liveColors);
 		options.add(deadCells);
 		options.add(deadColors);
+		options.add(cellSize);
+		options.add(size);
 		JOptionPane.showMessageDialog(f, options);
 		settings.setVisible(true);
 	}
@@ -145,7 +154,7 @@ class showRules implements ActionListener{
 class showSettings implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		GameOfLife.addToolbar();
+		GameOfLife.showSettings();
 	}
 }
 class liveCellChanged implements ActionListener{
@@ -165,4 +174,14 @@ class deadCellChanged implements ActionListener{
 		GameOfLife.DEADCELL = "assets/" + color.toLowerCase() + "Cell.png";
 		GameOfLife.updateGrid();
 	}
+}
+class sizeChanged implements ChangeListener{
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		int value = (int)((JSpinner)e.getSource()).getValue();
+		GameOfLife.SIZE = value;
+		GameOfLife.curGame = new Game();
+		Game.randomizeGrid();
+		GameOfLife.updateGrid();
+	}	
 }
